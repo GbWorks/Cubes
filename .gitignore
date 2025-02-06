@@ -34,3 +34,7 @@ BuildInfo.txt
 
 # Various logs
 *.log
+
+
+# MacOS files
+.DS_Store

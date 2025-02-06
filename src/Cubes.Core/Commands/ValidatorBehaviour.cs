@@ -24,8 +24,8 @@ namespace Cubes.Core.Commands
 
         // Based on http://softdevben.blogspot.com/2017/12/using-mediatr-pipeline-with-fluent.html
         public async Task<TResponse> Handle(TRequest request,
-            CancellationToken cancellationToken,
-            RequestHandlerDelegate<TResponse> next)
+            RequestHandlerDelegate<TResponse> next,
+            CancellationToken cancellationToken)
         {
             var context = new ValidationContext<TRequest>(request);
             var failures = _validators

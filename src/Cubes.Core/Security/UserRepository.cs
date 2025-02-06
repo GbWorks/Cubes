@@ -98,7 +98,7 @@ namespace Cubes.Core.Security
         private string ComputeHash(string input)
         {
             var buffer = Encoding.UTF8.GetBytes(input);
-            using var hashAlgorithm = HashAlgorithm.Create("SHA256");
+            using var hashAlgorithm = SHA256.Create();
 
             return Convert.ToBase64String(hashAlgorithm.ComputeHash(buffer));
         }

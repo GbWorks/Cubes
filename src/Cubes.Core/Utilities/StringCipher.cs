@@ -26,10 +26,17 @@ namespace Cubes.Core.Utilities
             var saltStringBytes = Generate128BitsOfRandomEntropy();
             var ivStringBytes = Generate128BitsOfRandomEntropy();
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-            using (var password = new Rfc2898DeriveBytes(passPhrase, saltStringBytes, DerivationIterations))
+            using (
+                var password = new Rfc2898DeriveBytes(
+                    passPhrase,
+                    saltStringBytes,
+                    DerivationIterations,
+                    HashAlgorithmName.SHA256
+                )
+            )
             {
                 var keyBytes = password.GetBytes(Keysize / 8);
-                using (var symmetricKey = new RijndaelManaged())
+                using (var symmetricKey = Aes.Create())
                 {
                     symmetricKey.BlockSize = 128;
                     symmetricKey.Mode = CipherMode.CBC;
@@ -38,14 +45,22 @@ namespace Cubes.Core.Utilities
                     {
                         using (var memoryStream = new MemoryStream())
                         {
-                            using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                            using (
+                                var cryptoStream = new CryptoStream(
+                                    memoryStream,
+                                    encryptor,
+                                    CryptoStreamMode.Write
+                                )
+                            )
                             {
                                 cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
                                 cryptoStream.FlushFinalBlock();
                                 // Create the final bytes as a concatenation of the random salt bytes, the random iv bytes and the cipher bytes.
                                 var cipherTextBytes = saltStringBytes;
                                 cipherTextBytes = cipherTextBytes.Concat(ivStringBytes).ToArray();
-                                cipherTextBytes = cipherTextBytes.Concat(memoryStream.ToArray()).ToArray();
+                                cipherTextBytes = cipherTextBytes
+                                    .Concat(memoryStream.ToArray())
+                                    .ToArray();
                                 memoryStream.Close();
                                 cryptoStream.Close();
                                 return Convert.ToBase64String(cipherTextBytes);
@@ -64,14 +79,27 @@ namespace Cubes.Core.Utilities
             // Get the saltbytes by extracting the first 32 bytes from the supplied cipherText bytes.
             var saltStringBytes = cipherTextBytesWithSaltAndIv.Take(Keysize / 8).ToArray();
             // Get the IV bytes by extracting the next 32 bytes from the supplied cipherText bytes.
-            var ivStringBytes = cipherTextBytesWithSaltAndIv.Skip(Keysize / 8).Take(Keysize / 8).ToArray();
+            var ivStringBytes = cipherTextBytesWithSaltAndIv
+                .Skip(Keysize / 8)
+                .Take(Keysize / 8)
+                .ToArray();
             // Get the actual cipher text bytes by removing the first 64 bytes from the cipherText string.
-            var cipherTextBytes = cipherTextBytesWithSaltAndIv.Skip((Keysize / 8) * 2).Take(cipherTextBytesWithSaltAndIv.Length - ((Keysize / 8) * 2)).ToArray();
+            var cipherTextBytes = cipherTextBytesWithSaltAndIv
+                .Skip((Keysize / 8) * 2)
+                .Take(cipherTextBytesWithSaltAndIv.Length - ((Keysize / 8) * 2))
+                .ToArray();
 
-            using (var password = new Rfc2898DeriveBytes(passPhrase, saltStringBytes, DerivationIterations))
+            using (
+                var password = new Rfc2898DeriveBytes(
+                    passPhrase,
+                    saltStringBytes,
+                    DerivationIterations,
+                    HashAlgorithmName.SHA256
+                )
+            )
             {
                 var keyBytes = password.GetBytes(Keysize / 8);
-                using (var symmetricKey = new RijndaelManaged())
+                using (var symmetricKey = Aes.Create())
                 {
                     symmetricKey.BlockSize = 128;
                     symmetricKey.Mode = CipherMode.CBC;
@@ -80,13 +108,27 @@ namespace Cubes.Core.Utilities
                     {
                         using (var memoryStream = new MemoryStream(cipherTextBytes))
                         {
-                            using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                            using (
+                                var cryptoStream = new CryptoStream(
+                                    memoryStream,
+                                    decryptor,
+                                    CryptoStreamMode.Read
+                                )
+                            )
                             {
                                 var plainTextBytes = new byte[cipherTextBytes.Length];
-                                var decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
+                                var decryptedByteCount = cryptoStream.Read(
+                                    plainTextBytes,
+                                    0,
+                                    plainTextBytes.Length
+                                );
                                 memoryStream.Close();
                                 cryptoStream.Close();
-                                return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
+                                return Encoding.UTF8.GetString(
+                                    plainTextBytes,
+                                    0,
+                                    decryptedByteCount
+                                );
                             }
                         }
                     }
@@ -97,11 +139,10 @@ namespace Cubes.Core.Utilities
         private static byte[] Generate128BitsOfRandomEntropy()
         {
             var randomBytes = new byte[16]; // 16 Bytes will give us 128 bits.
-            using (var rngCsp = new RNGCryptoServiceProvider())
-            {
-                // Fill the array with cryptographically secure random bytes.
-                rngCsp.GetBytes(randomBytes);
-            }
+            using var rngCsp = RandomNumberGenerator.Create();
+
+            // Fill the array with cryptographically secure random bytes.
+            rngCsp.GetBytes(randomBytes);
             return randomBytes;
         }
     }

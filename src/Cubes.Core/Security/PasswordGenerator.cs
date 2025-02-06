@@ -20,7 +20,7 @@ namespace Cubes.Core.Security
             // https://stackoverflow.com/a/24711536/3410871
             // Buffer length should be multiple of 3, i.e. (27 / 3) * 4 = 32
 
-            using var cryptRNG = new RNGCryptoServiceProvider();
+            using var cryptRNG = RandomNumberGenerator.Create();
             byte[] tokenBuffer = new byte[length];
             cryptRNG.GetBytes(tokenBuffer);
 

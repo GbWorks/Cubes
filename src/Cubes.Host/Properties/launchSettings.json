@@ -1,29 +1,13 @@
 {
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:10462",
-      "sslPort": 44306
-    }
-  },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "api/values",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "Cubes.Host": {
       "commandName": "Project",
       "launchUrl": "api/values",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "CUBES_ADMIN": "${BINARIES}\\..\\..\\..\\..\\..\\..\\Core.WebApp\\dist\\CubesManagement.zip",
-        "CUBES_APPLICATION": "${BINARIES}\\..\\..\\..\\..\\..\\..\\Pharmex.App\\src\\Cubes.Pharmex\\bin\\Debug\\netcoreapp3.1\\Cubes.Pharmex.yaml"
+        "CUBES_APPLICATION_LLL": "${BINARIES}\\..\\..\\..\\..\\..\\..\\Pharmex.App\\src\\Cubes.Pharmex\\bin\\Debug\\netcoreapp3.1\\Cubes.Pharmex.yaml"
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
     },
@@ -34,17 +18,6 @@
         "CUBES_ADMIN": "${BINARIES}\\..\\..\\..\\..\\..\\..\\Core.WebApp\\dist\\CubesManagement.zip",
         "CUBES_APPLICATION": "${BINARIES}\\..\\..\\..\\..\\..\\..\\Pharmex.App\\src\\Cubes.Pharmex\\bin\\Debug\\netcoreapp3.1\\Cubes.Pharmex.yaml"
       }
-    },
-    "WSL 2": {
-      "commandName": "WSL2",
-      "launchUrl": "https://localhost:5001/api/values",
-      "environmentVariables": {
-        "ASPNETCORE_URLS": "https://localhost:5001;http://localhost:5000",
-        "ASPNETCORE_ENVIRONMENT": "Production",
-        "CUBES_ADMIN": "${BINARIES}\\..\\..\\..\\..\\..\\..\\Core.WebApp\\dist\\CubesManagement.zip",
-        "CUBES_APPLICATION": "${BINARIES}\\..\\..\\..\\..\\..\\..\\Pharmex.App\\src\\Cubes.Pharmex\\bin\\Debug\\netcoreapp3.1\\Cubes.Pharmex.yaml"
-      },
-      "distributionName": ""
     }
   }
 }

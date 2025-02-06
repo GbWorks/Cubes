@@ -58,15 +58,17 @@ namespace Cubes.Core.Web
                                 sb.Append("      - ").AppendLine(error.ErrorMessage);
                         }
 
-                        logger.LogWarning("Model validation failed! {action}\r\n" + sb.ToString(),
+                        logger.LogWarning("Model validation failed! {action}\r\n" + sb,
                             context.ActionDescriptor.DisplayName);
 
                         return builtInFactory(context);
                     };
                 })
                 .AddControllersAsServices()
-                .AddFluentValidation()
                 .AddNewtonsoftJson();
+
+            services.AddFluentValidationAutoValidation();
+            services.AddFluentValidationClientsideAdapters();
 
             // Add applications assemblies
             foreach (var asm in assemblies)

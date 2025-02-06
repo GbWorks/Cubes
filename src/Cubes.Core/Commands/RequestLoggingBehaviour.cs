@@ -29,8 +29,8 @@ namespace Cubes.Core.Commands
         }
 
         public async Task<TResponse> Handle(TRequest request,
-            CancellationToken cancellationToken,
-            RequestHandlerDelegate<TResponse> next)
+            RequestHandlerDelegate<TResponse> next,
+            CancellationToken cancellationToken)
         {
             var requestName = typeof(TRequest).Name;
             var requestType = typeof(TRequest).FullName;

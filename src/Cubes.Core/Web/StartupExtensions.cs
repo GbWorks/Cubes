@@ -172,7 +172,7 @@ namespace Cubes.Core.Web
                 var requestInfo = $"{ctx.Request.Method} {ctx.Request.Path}{ctx.Request.Query.AsString()}";
 
                 // Add to headers
-                ctx.Request.Headers.Add(CUBES_HEADER_REQUEST_ID, new[] { requestID });
+                ctx.Request.Headers.Append(CUBES_HEADER_REQUEST_ID, new[] { requestID });
 
                 // Provide context information
                 var ctxProvider = ctx.RequestServices.GetService<IContextProvider>();
@@ -183,7 +183,7 @@ namespace Cubes.Core.Web
                 ctx.Response.OnStarting(() =>
                 {
                     watch.Stop();
-                    ctx.Response.Headers.Add(CUBES_HEADER_REQUEST_ID, new[] { requestID });
+                    ctx.Response.Headers.Append(CUBES_HEADER_REQUEST_ID, new[] { requestID });
                     return Task.FromResult(0);
                 });
 

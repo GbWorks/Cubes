@@ -1,11 +1,13 @@
 using System.Reflection;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Cubes.Core.Security;
 using Cubes.Core.Base;
 using Cubes.Core.Commands;
 using Cubes.Core.Commands.Basic;
 using MediatR;
 using MediatR.Pipeline;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cubes.Core.Utilities
 {
@@ -17,11 +19,9 @@ namespace Cubes.Core.Utilities
             builder.RegisterType<Mediator>()
                 .As<IMediator>()
                 .InstancePerLifetimeScope();
-            builder.Register<ServiceFactory>(context =>
-            {
-                var c = context.Resolve<IComponentContext>();
-                return t => c.Resolve(t);
-            });
+
+            var services = new ServiceCollection();
+            builder.Populate(services);
 
             // Simple MediatR pipeline
             builder.RegisterGeneric(typeof(RequestLoggingBehaviour<,>)).As(typeof(IPipelineBehavior<,>));
