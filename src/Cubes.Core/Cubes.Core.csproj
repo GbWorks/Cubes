@@ -10,8 +10,9 @@
     <Authors>Giorgos Brantzos</Authors>
     <Company>GbWorks</Company>
     <Copyright>2019 - 2025</Copyright>
-    <PackageProjectUrl>https://github.com/gbrantzos/CubesNEXT</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/gbrantzos/CubesNEXT</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/gbworks/Cubes</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/gbworks/Cubes</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
