@@ -79,7 +79,11 @@ namespace Cubes.Core.Tests.Utilities
                     return s.ToDynamic();
                 })
                 .ToList(),
-                Columns = Sample.GetColumns()
+                Columns = Sample.GetColumns(),
+                Metadata = new QueryMetadata()
+                {
+                    Columns = []
+                }
             };
 
             var queryResult2 = new QueryResult
@@ -103,6 +107,16 @@ namespace Cubes.Core.Tests.Utilities
                     new QueryResult.Column{ Name = "DetailID", ColumnType = typeof(int) },
                     new QueryResult.Column{ Name = "Text", ColumnType = typeof(string) },
                     new QueryResult.Column{ Name = "Index", ColumnType = typeof(string) }
+                },
+                Metadata = new QueryMetadata
+                {
+                    FixedColumns = 0,
+                    TotalsLabel = "Totals",
+                    Columns = [
+                        new QueryMetadataColumn { Name = "DetailID" },
+                        new QueryMetadataColumn { Name = "Text" },
+                        new QueryMetadataColumn { Name = "Index" }
+                    ]
                 }
             };
 
